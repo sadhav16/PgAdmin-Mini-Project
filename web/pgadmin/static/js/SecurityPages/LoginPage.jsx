@@ -28,7 +28,7 @@ export default function LoginPage({userLanguage, langOptions, forgotPassUrl, csr
         marginRight: 'auto',
         marginLeft: 'auto'
       }} textCenter />}
-      <BasePage title={gettext('WE THE')} pageImage={<LoginImage style={{height: '100%', width: '100%'}} />} {...props}>
+      <BasePage title={gettext('Login')} pageImage={<LoginImage style={{height: '100%', width: '100%'}} />} {...props}>
         <form style={{display:'flex', gap:'15px', flexDirection:'column'}} action={loginUrl} method="POST">
           {showLoginForm &&
           <>
