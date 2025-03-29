@@ -113,7 +113,7 @@ DEFAULT_SERVER = '127.0.0.1'
 
 # The default port on which the app server will listen if not set in the
 # environment by the runtime
-DEFAULT_SERVER_PORT = 5050
+DEFAULT_SERVER_PORT = 4040
 
 # This param is used to override the default web server information about
 # the web technology and the frameworks being used in the application
@@ -244,7 +244,7 @@ LOGIN_BANNER = ""
 ##########################################################################
 
 # Debug mode?
-DEBUG = False
+DEBUG = True
 
 # Application log level - one of:
 #   CRITICAL 50

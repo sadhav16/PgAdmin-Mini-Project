@@ -199,10 +199,7 @@ def main():
                 host=config.DEFAULT_SERVER,
                 port=config.EFFECTIVE_SERVER_PORT,
                 debug=config.DEBUG,
-                use_reloader=(
-                    (not app.PGADMIN_RUNTIME) and
-                    os.environ.get("WERKZEUG_RUN_MAIN") is not None
-                ),
+                use_reloader=True,
                 threaded=config.THREADED_MODE
             )
         else:

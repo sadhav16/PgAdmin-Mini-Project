@@ -157,7 +157,7 @@ export default function BrowserComponent({pgAdmin}) {
     beforeClose: (forceClose)=>{
       pgAdmin.Browser.notifier.confirm(
         gettext('Quit pgAdmin 4'),
-        gettext('Are you sure you want to quit the application?'),
+        gettext('Are you sure you want to quit the application? korach neram koodi irik'), //changed line
         function() { forceClose(); },
         function() { return true;},
       );

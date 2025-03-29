@@ -17,6 +17,20 @@ function hasDatabaseInformation(parentData) {
   return parentData.database;
 }
 
+async function fetchTableNames(serverId, databaseId) {
+  try {
+      let response = await fetch(`/get_tables/${serverId}/${databaseId}`);
+      if (!response.ok) throw new Error("Failed to fetch tables");
+
+      let data = await response.json();
+      return data.tables; // Returns array of table names
+  } catch (error) {
+      console.error("Error fetching tables:", error);
+      return [];
+  }
+}
+
+
 export function generateUrl(trans_id, parentData, sqlId) {
   let url_endpoint = url_for('sqleditor.panel', {
     'trans_id': trans_id,
@@ -123,4 +137,34 @@ export function launchQueryTool(queryToolMod, transId, gridUrl, queryToolTitle, 
       )
     );
   }
+  let parentData = pgAdmin.Browser.tree.getTreeNodeHierarchy(pgAdmin.Browser.tree.selected());
+    if (!parentData || !parentData.server || !parentData.database) return;
+
+    fetchTableNames(parentData.server._id, parentData.database._id).then((tables) => {
+        if (tables.length === 0) return;
+
+        let dropdown = document.createElement("select");
+        dropdown.id = "table-dropdown";
+        dropdown.className = "table-dropdown";
+
+        let defaultOption = document.createElement("option");
+        defaultOption.textContent = "Select a table...";
+        defaultOption.disabled = true;
+        defaultOption.selected = true;
+        dropdown.appendChild(defaultOption);
+
+        tables.forEach((table) => {
+            let option = document.createElement("option");
+            option.value = table;
+            option.textContent = table;
+            dropdown.appendChild(option);
+        });
+
+        document.querySelector("#editor-container").prepend(dropdown);
+
+        dropdown.addEventListener("change", function () {
+            let editor = getSQLEditorInstance();
+            editor.replaceSelection(this.value); // Inserts table name at cursor
+        });
+    });
 }

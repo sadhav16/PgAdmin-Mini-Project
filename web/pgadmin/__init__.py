@@ -86,22 +86,42 @@ class PgAdmin(Flask):
 
         super().__init__(*args, **kwargs)
 
+    # def find_submodules(self, basemodule):
+    #     try:
+    #         for module_name in find_modules(basemodule, True):
+    #             if module_name in self.config['MODULE_BLACKLIST']:
+    #                 self.logger.info(
+    #                     'Skipping blacklisted module: %s' % module_name
+    #                 )
+    #                 continue
+    #             self.logger.info(
+    #                 'Examining potential module: %s' % module_name)
+    #             module = import_module(module_name)
+    #             for key in list(module.__dict__.keys()):
+    #                 if isinstance(module.__dict__[key], PgAdminModule):
+    #                     yield module.__dict__[key]
+    #     except Exception:
+    #         return []
+        
     def find_submodules(self, basemodule):
         try:
             for module_name in find_modules(basemodule, True):
-                if module_name in self.config['MODULE_BLACKLIST']:
+                if module_name != 'pgadmin.tools.sqleditor':  # Allow only SQL Editor
                     self.logger.info(
-                        'Skipping blacklisted module: %s' % module_name
+                        'Skipping module: %s' % module_name
                     )
                     continue
+                
                 self.logger.info(
-                    'Examining potential module: %s' % module_name)
+                    'Loading module: %s' % module_name
+                )
                 module = import_module(module_name)
                 for key in list(module.__dict__.keys()):
                     if isinstance(module.__dict__[key], PgAdminModule):
                         yield module.__dict__[key]
         except Exception:
             return []
+
 
     @property
     def submodules(self):

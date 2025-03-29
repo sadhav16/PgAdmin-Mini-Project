@@ -70,6 +70,7 @@ from pgadmin.tools.sqleditor.utils.apply_explain_plan_wrapper import \
 from pgadmin.browser.server_groups.servers.utils import \
     convert_connection_parameter
 from pgadmin.misc.workspaces import check_and_delete_adhoc_server
+from .routes import get_tables
 
 MODULE_NAME = 'sqleditor'
 TRANSACTION_STATUS_CHECK_FAILED = gettext("Transaction status check failed.")
@@ -86,6 +87,8 @@ class SqlEditorModule(PgAdminModule):
     """
 
     LABEL = gettext("Query Tool")
+
+    
 
     def get_own_menuitems(self):
         return {'tools': [
@@ -168,7 +171,7 @@ class SqlEditorModule(PgAdminModule):
 
 
 blueprint = SqlEditorModule(MODULE_NAME, __name__, static_url_path='/static')
-
+blueprint.add_url_rule('/get_tables/<database>', view_func=get_tables)
 
 @blueprint.route('/')
 @pga_login_required
